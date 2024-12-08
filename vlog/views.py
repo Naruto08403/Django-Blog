@@ -10,17 +10,18 @@ from .forms import VlogPostForm
 
 # Create your views here.
 
-class VlogListView(ListView):
+class VlogListView(LoginRequiredMixin, ListView):
     model = VlogPost
     template_name = 'vlog/vlog_list.html'
     context_object_name = 'vlogs'
     paginate_by = 10
+    ordering = ['-published_date']
     
     def get_queryset(self):
-        return VlogPost.objects.select_related('author').order_by('-published_date')
+        return VlogPost.objects.select_related('author')
 
 @method_decorator(cache_page(60 * 15), name='dispatch')  # Cache for 15 minutes
-class VlogDetailView(DetailView):
+class VlogDetailView(LoginRequiredMixin, DetailView):
     model = VlogPost
     template_name = 'vlog/vlog_detail.html'
     context_object_name = 'vlog'
@@ -43,3 +44,19 @@ class VlogUpdateView(LoginRequiredMixin, UpdateView):
     form_class = VlogPostForm
     template_name = 'vlog/vlog_form.html'
     success_url = reverse_lazy('vlog:vlog_list')
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user)
+
+# Public views that don't require authentication
+class PublicVlogListView(ListView):
+    model = VlogPost
+    template_name = 'vlog/public_vlog_list.html'
+    context_object_name = 'vlogs'
+    paginate_by = 10
+    ordering = ['-published_date']
+
+class PublicVlogDetailView(DetailView):
+    model = VlogPost
+    template_name = 'vlog/public_vlog_detail.html'
+    context_object_name = 'vlog'

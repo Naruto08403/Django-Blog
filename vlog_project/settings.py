@@ -123,5 +123,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# Authentication settings
+LOGIN_REDIRECT_URL = 'vlog:vlog_list'
+LOGOUT_REDIRECT_URL = 'vlog:public_vlog_list'
+LOGIN_URL = 'login'

@@ -130,3 +130,26 @@ The `vlog_detail.html` template includes:
 - User authentication
 - Form validation
 - XSS prevention
+
+To deploy your application:
+
+Install the EB CLI:
+bash
+CopyInsert in Terminal
+pip install awsebcli
+Initialize your EB application:
+bash
+CopyInsert in Terminal
+eb init
+Create your environment:
+bash
+CopyInsert in Terminal
+eb create
+Deploy your application:
+bash
+CopyInsert in Terminal
+eb deploy
+Open your application:
+bash
+CopyInsert in Terminal
+eb open

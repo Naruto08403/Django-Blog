@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>My Vlogs</h1>
+                <a href="{% url 'vlog:vlog_create' %}" class="btn btn-primary">Create New Vlog</a>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for vlog in vlogs %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ vlog.title }}</h5>
+                            <p class="card-text">{{ vlog.description|truncatewords:30 }}</p>
+                            <div class="text-muted mb-2">
+                                <small>Published on {{ vlog.published_date|date }}</small>
+                            </div>
+                            {% if vlog.tags %}
+                            <div class="mb-3">
+                                {% for tag in vlog.tags.split %}
+                                <span class="badge bg-secondary me-1">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'vlog:vlog_detail' vlog.pk %}" class="btn btn-primary">View</a>
+                                {% if user == vlog.author %}
+                                <a href="{% url 'vlog:vlog_edit' vlog.pk %}" class="btn btn-outline-primary">Edit</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        You haven't created any vlogs yet. 
+                        <a href="{% url 'vlog:vlog_create' %}" class="alert-link">Create your first vlog!</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if is_paginated %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ vlog.title }}</h1>
+                    
+                    <div class="text-muted mb-3">
+                        <small>Posted by {{ vlog.author.username }} on {{ vlog.published_date|date }}</small>
+                    </div>
+
+                    {% if vlog.video_url %}
+                    <div class="ratio ratio-16x9 mb-4">
+                        <iframe src="{{ vlog.video_url }}" allowfullscreen></iframe>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-text mb-4">
+                        {{ vlog.description|linebreaks }}
+                    </div>
+
+                    {% if vlog.tags %}
+                    <div class="mb-4">
+                        {% for tag in vlog.tags.split %}
+                        <span class="badge bg-secondary me-1">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'vlog:public_vlog_list' %}" class="btn btn-secondary">Back to Vlogs</a>
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login to Create Your Own</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

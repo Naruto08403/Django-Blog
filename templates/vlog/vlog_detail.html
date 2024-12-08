@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ vlog.title }}</h1>
+                    
+                    <div class="text-muted mb-3">
+                        <small>Posted by {{ vlog.author.username }} on {{ vlog.published_date|date }}</small>
+                    </div>
+
+                    {% if vlog.video_url %}
+                    <div class="ratio ratio-16x9 mb-4">
+                        {% with embed_url=vlog.get_embed_url %}
+                        {% if embed_url %}
+                        <iframe 
+                            src="{{ embed_url }}"
+                            title="{{ vlog.title }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                        {% else %}
+                        <div class="text-center p-4 bg-light">
+                            <p class="mb-3">Unable to load video player.</p>
+                            <a href="{{ vlog.video_url }}" target="_blank" class="btn btn-primary">
+                                Watch on YouTube
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    {% endif %}
+
+                    <div class="card-text mb-4">
+                        {{ vlog.description|linebreaks }}
+                    </div>
+
+                    {% if vlog.tags %}
+                    <div class="mb-4">
+                        {% for tag in vlog.tags.split %}
+                        <span class="badge bg-secondary me-1">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'vlog:vlog_list' %}" class="btn btn-secondary">Back to Vlogs</a>
+                        {% if user == vlog.author %}
+                        <a href="{% url 'vlog:vlog_edit' vlog.pk %}" class="btn btn-primary">Edit Vlog</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

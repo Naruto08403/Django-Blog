@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Public Vlogs</h1>
+            
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for vlog in vlogs %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ vlog.title }}</h5>
+                            <p class="card-text">{{ vlog.description|truncatewords:30 }}</p>
+                            <div class="text-muted mb-2">
+                                <small>By {{ vlog.author.username }} on {{ vlog.published_date|date }}</small>
+                            </div>
+                            <a href="{% url 'vlog:public_vlog_detail' vlog.pk %}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        No vlogs available yet.
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if is_paginated %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            <div class="text-center mt-4">
+                <p>Want to create your own vlog? <a href="{% url 'login' %}">Login</a> to get started!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
