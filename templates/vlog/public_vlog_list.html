@@ -4,9 +4,29 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-4">Public Vlogs</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>{% if current_search %}Search Results{% else %}Public Vlogs{% endif %}</h1>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'vlog:vlog_list' %}" class="btn btn-primary">My Vlogs</a>
+                {% endif %}
+            </div>
+
+            <!-- Search Bar -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="d-flex">
+                        <input type="text" name="search" class="form-control me-2" 
+                               placeholder="Search vlogs..." 
+                               value="{{ current_search }}">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                        {% if current_search %}
+                            <a href="{% url 'vlog:public_vlog_list' %}" class="btn btn-outline-secondary ms-2">Clear</a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
             
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
                 {% for vlog in vlogs %}
                 <div class="col">
                     <div class="card h-100">
@@ -16,14 +36,29 @@
                             <div class="text-muted mb-2">
                                 <small>By {{ vlog.author.username }} on {{ vlog.published_date|date }}</small>
                             </div>
-                            <a href="{% url 'vlog:public_vlog_detail' vlog.pk %}" class="btn btn-primary">Read More</a>
+                            {% if vlog.tags %}
+                            <div class="mb-3">
+                                {% for tag in vlog.tags.split %}
+                                <span class="badge bg-secondary">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'vlog:public_vlog_detail' vlog.pk %}" class="btn btn-primary">View</a>
+                                <small class="text-muted">{{ vlog.author.username }}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% empty %}
                 <div class="col-12">
                     <div class="alert alert-info">
-                        No vlogs available yet.
+                        {% if current_search %}
+                            No vlogs found matching "{{ current_search }}".
+                            <a href="{% url 'vlog:public_vlog_list' %}" class="alert-link">View all vlogs</a>
+                        {% else %}
+                            No vlogs have been published yet.
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -34,7 +69,7 @@
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}">Previous</a>
                     </li>
                     {% endif %}
 
@@ -44,16 +79,12 @@
 
                     {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}">Next</a>
                     </li>
                     {% endif %}
                 </ul>
             </nav>
             {% endif %}
-
-            <div class="text-center mt-4">
-                <p>Want to create your own vlog? <a href="{% url 'login' %}">Login</a> to get started!</p>
-            </div>
         </div>
     </div>
 </div>
