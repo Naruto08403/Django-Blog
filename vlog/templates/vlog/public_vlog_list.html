@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Browse Vlogs</h1>
+            <p class="text-muted">Welcome to our vlog collection!</p>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'login' %}" class="btn btn-primary">Login to Create Vlogs</a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for vlog in vlogs %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ vlog.title }}</h5>
+                    <p class="card-text">{{ vlog.description|truncatewords:20 }}</p>
+                    <p class="text-muted small">By {{ vlog.author }} on {{ vlog.published_date|date:"M d, Y" }}</p>
+                    <a href="{% url 'vlog:public_vlog_detail' vlog.pk %}" class="btn btn-primary">Watch Video</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No vlogs available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

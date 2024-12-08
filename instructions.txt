@@ -1,0 +1,22 @@
+Exam: Building a Vlog Application With Django Instructions: Answer the following questions. Develop your project creatively and provide detailed explanations with code snippets in report. There is not any page/word limit for report writing.
+ Section 1: Models (20 Points) 1. Design Django model for VlogPost with the following fields: a. VlogPost model: title, video_url, description, author, published_date, tags. 
+b. Specify the field types and any constraints. Include a code example and explain each field’s purpose. (20 Points)
+ Section 2: Views (20 Points) 1. ListView and DetailView for VlogPost:
+ a. Write a ListView class to display a list of all vlogs with pagination (10 vlogs per page). Provide the code and explain the pagination logic. (5 Points)
+ b. Write a DetailView for a single VlogPost, based on its id. Include an example URL pattern for this view. (5 Points) 
+2. Create and Update Views for VlogPost: a
+. Write a CreateView for creating a new VlogPost, using VlogPostForm. Describe the purpose of this view and how it handles form submission. (5 Points)
+ b. Write an UpdateView for editing an existing VlogPost, explaining how the view identifies the specific vlog to update. Provide code examples in report too. (5 Points)
+ Section 3: Templates (10 Points) 1. Detail Template for VlogPost:
+ a. Create a vlog_detail.html template to display a single vlog, with fields such as title, video_url, description, author, published_date, and tags. Provide the HTML structure. (10 Points) 
+Section 4: Django Forms and Modal Forms (20 Points) 
+1. Creating a VlogPost Form: a. Write a Django form for the VlogPost model, including fields for title, video_url, description, and tags. Show the code for this form in forms.py (10 Points) 2. Modal Form for VlogPost Creation:
+ a. Explain how to create a modal form for adding a new VlogPost in a template, including the necessary HTML structure to trigger the modal. (10 Points
+ Section 5: URL Configuration (10 Points) 
+1.	Define URL Patterns: o Write URL patterns for the following views: ▪ 
+Displaying all vlogs (/vlog/). ▪ Displaying a single vlog post by id (/vlog//). ▪ Creating a new vlog (/vlog/new/). ▪ Editing a vlog by id (/vlog/edit//). Provide the code for urls.py with these patterns. (10 Points)
+ Section 6: Admin Interface Customization (10 Points) 
+1. Admin Setup for VlogPost and Category: o Register VlogPost and Category models in Django admin. Provide the code for admin.py. (5 Points)
+ 2. Customizing the Admin Interface: o Customize the VlogPost admin to display title, author, published_date, and category in the list view, and enable filtering by category. Provide the code and explain the customization. (5 Points) 
+Section 7: Deployment on AWS (ElasticBeanStalk) (10 Points) 
+1. Deploy your project to AWS via ElasticBeanStalk service and provide deployed link in your

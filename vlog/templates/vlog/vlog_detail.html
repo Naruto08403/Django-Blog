@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">{{ vlog.title }}</h1>
+            <div class="embed-responsive embed-responsive-16by9 mb-3">
+                <iframe class="embed-responsive-item" src="{{ vlog.video_url }}" allowfullscreen></iframe>
+            </div>
+            <p class="card-text">{{ vlog.description }}</p>
+            <div class="mt-3">
+                <strong>Tags:</strong> {{ vlog.tags }}
+            </div>
+            <div class="mt-2">
+                <small class="text-muted">Posted by {{ vlog.author }} on {{ vlog.published_date }}</small>
+            </div>
+            {% if user == vlog.author %}
+            <div class="mt-3">
+                <a href="{% url 'vlog:vlog_edit' vlog.pk %}" class="btn btn-primary">Edit</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
